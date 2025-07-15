@@ -1,4 +1,6 @@
 import './App.css'
+import 'bui/packages/ui/tokens.css';
+import 'bui/packages/ui/button.js';
 
 function App() {
   return (
@@ -7,8 +9,14 @@ function App() {
         <h1>Bitcoin Wallet</h1>
         <p className="subtitle">A simple bitcoin wallet for your enjoyment.</p>
         <div className="button-group">
-          <button className="primary">Create a new wallet</button>
-          <button className="secondary">Restore existing wallet</button>
+          <bui-button
+            style-type="filled" 
+            size="large" 
+            label="Get Started" />
+          <bui-button
+            style-type="outline" 
+            size="large" 
+            label="Restore existing wallet" />
         </div>
       </main>
       <footer className="footer">
