@@ -4,24 +4,30 @@ import 'bui/packages/ui/button.js';
 
 function App() {
   return (
-    <div className="app-container" data-theme="bitcoindesign" data-mode="light">
+    <div className="app-container" data-theme="conduit" data-mode="light">
       <main className="landing-main">
-        <h1>Bitcoin Wallet</h1>
-        <p className="subtitle">A simple bitcoin wallet for your enjoyment.</p>
-        <div className="button-group">
-          dfgdfg
-          <bui-button
-            style-type="filled" 
-            size="large" 
-            label="Get Started" />
-          <bui-button
-            style-type="outline" 
-            size="large" 
-            label="Restore existing wallet" />
+        <div className="content-wrapper">
+          <div className="text-content">
+            <h1 className="title">bwallet</h1>
+            <p className="subtitle">Start sending & receiving bitcoin today</p>
+          </div>
+          <div className="button-group">
+            <bui-button
+              style-type="filled" 
+              size="large" 
+              label="Create new wallet"
+              content="label+icon"
+              icon="arrow-right" />
+            <bui-button
+              style-type="outline" 
+              size="large" 
+              label="Restore wallet" />
+          </div>
         </div>
       </main>
       <footer className="footer">
-        Your wallet, your coins. 100% open source & open design.
+        <p className="footer-text">A simple, open-source bitcoin wallet.</p>
+        <a href="#" className="learn-more">Learn More →</a>
       </footer>
     </div>
   )
