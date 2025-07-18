@@ -4,11 +4,12 @@ import 'bui/packages/ui/button.js';
 
 function App() {
   return (
-    <div className="app-container">
+    <div className="app-container" data-theme="bitcoindesign" data-mode="light">
       <main className="landing-main">
         <h1>Bitcoin Wallet</h1>
         <p className="subtitle">A simple bitcoin wallet for your enjoyment.</p>
         <div className="button-group">
+          dfgdfg
           <bui-button
             style-type="filled" 
             size="large" 
