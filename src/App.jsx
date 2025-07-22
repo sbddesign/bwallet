@@ -1,6 +1,7 @@
 import './App.css'
 import 'bui/packages/ui/tokens.css';
 import 'bui/packages/ui/button.js';
+import 'bui/packages/icons/dist/arrowRight/lg.js';
 
 function App() {
   return (
@@ -17,7 +18,9 @@ function App() {
               size="large" 
               label="Create new wallet"
               content="label+icon"
-              icon="arrow-right" />
+            >
+              <bui-arrow-right-lg slot="icon"></bui-arrow-right-lg>  
+            </bui-button>
             <bui-button
               style-type="outline" 
               size="large" 
