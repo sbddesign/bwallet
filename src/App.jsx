@@ -40,11 +40,11 @@ function App() {
   }
 
   return (
-    <div className="app-container" data-theme="conduit" data-mode="light">
+    <div className="page-container" data-theme="conduit" data-mode="light">
       <main className="landing-main">
-        <div className="content-wrapper">
+        <div className="landing-content-wrapper">
           <div className="text-content">
-            <h1 className="title">bwallet</h1>
+            <h1 className="title title-large">bwallet</h1>
             <p className="subtitle">Start sending & receiving bitcoin today</p>
           </div>
           <div className="button-group">
