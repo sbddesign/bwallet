@@ -12,6 +12,8 @@ function BeforeWeBegin({ onBack, onNext }) {
   const toggle2Ref = useRef(null);
   const buttonRef = useRef(null);
 
+  const isNextEnabled = toggle1Active && toggle2Active;
+
   useEffect(() => {
     const toggle1 = toggle1Ref.current;
     const toggle2 = toggle2Ref.current;
@@ -52,9 +54,7 @@ function BeforeWeBegin({ onBack, onNext }) {
         button.removeEventListener('click', handleButtonClick);
       }
     };
-  }, [onNext]);
-
-  const isNextEnabled = toggle1Active && toggle2Active;
+  }, [isNextEnabled]);
 
   return (
     <div className="before-we-begin-container" data-theme="conduit" data-mode="light">

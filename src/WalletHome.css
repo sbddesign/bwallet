@@ -1,0 +1,150 @@
+/* Wallet Home page specific styles */
+@import './shared.css';
+
+.wallet-home-container {
+  background: var(--background);
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Amount section */
+.amount-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-4);
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.amount-display {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-4);
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.btc-amount {
+  font-family: 'Outfit', 'Noto Sans', sans-serif;
+  font-weight: 400;
+  font-size: 36px;
+  line-height: normal;
+  color: var(--text-primary);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.usd-amount {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: normal;
+  color: var(--text-secondary);
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Numpad section */
+.numpad-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+}
+
+.numpad-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  width: 100%;
+  max-width: 390px;
+}
+
+.numpad-empty {
+  width: 130px;
+  height: 130px;
+  flex-shrink: 0;
+}
+
+/* Bottom navigation */
+.bottom-nav {
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.bottom-nav bui-button {
+  flex: 1;
+}
+
+.bottom-nav bui-button:first-child {
+  border-radius: 24px 0 0 24px;
+  border-right: none;
+}
+
+.bottom-nav bui-button:last-child {
+  border-radius: 0 24px 24px 0;
+  border-left: none;
+}
+
+.bottom-nav bui-button:nth-child(2) {
+  border-radius: 0;
+  flex: 0 0 auto;
+  width: 80px;
+}
+
+/* Responsive design for Wallet Home page */
+@media (max-width: 768px) {
+  .btc-amount {
+    font-size: 28px;
+  }
+  
+  .usd-amount {
+    font-size: 20px;
+  }
+  
+  .numpad-grid {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .btc-amount {
+    font-size: 24px;
+  }
+  
+  .usd-amount {
+    font-size: 18px;
+  }
+  
+  .bottom-nav {
+    flex-direction: column;
+    gap: var(--size-2);
+  }
+  
+  .bottom-nav bui-button:first-child,
+  .bottom-nav bui-button:last-child {
+    border-radius: 24px;
+    border: 2px solid var(--button-outline-outline);
+  }
+  
+  .bottom-nav bui-button:nth-child(2) {
+    border-radius: 24px;
+    width: 100%;
+  }
+} 

@@ -1,26 +1,30 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import './App.css'
 import 'bui/packages/ui/tokens.css';
 import 'bui/packages/ui/button.js';
 import 'bui/packages/icons/dist/arrowRight/lg.js';
 import BeforeWeBegin from './BeforeWeBegin.jsx';
+import WalletHome from './WalletHome.jsx';
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState('landing');
   const createWalletButtonRef = useRef(null);
 
-  const handleCreateWallet = () => {
+  const handleCreateWallet = useCallback(() => {
     setCurrentScreen('before-we-begin');
-  };
+  }, []);
 
-  const handleBack = () => {
-    setCurrentScreen('landing');
-  };
+  const handleBack = useCallback(() => {
+    if (currentScreen === 'before-we-begin') {
+      setCurrentScreen('landing');
+    } else if (currentScreen === 'wallet-home') {
+      setCurrentScreen('before-we-begin');
+    }
+  }, [currentScreen]);
 
-  const handleNext = () => {
-    // TODO: Navigate to next screen
-    console.log('Next button clicked');
-  };
+  const handleNext = useCallback(() => {
+    setCurrentScreen('wallet-home');
+  }, []);
 
   useEffect(() => {
     const button = createWalletButtonRef.current;
@@ -33,10 +37,14 @@ function App() {
         button.removeEventListener('click', handleClick);
       };
     }
-  }, []);
+  }, [handleCreateWallet]);
 
   if (currentScreen === 'before-we-begin') {
     return <BeforeWeBegin onBack={handleBack} onNext={handleNext} />;
+  }
+
+  if (currentScreen === 'wallet-home') {
+    return <WalletHome onBack={handleBack} />;
   }
 
   return (
