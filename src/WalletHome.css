@@ -67,8 +67,8 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0;
-  width: 100%;
-  max-width: 390px;
+  width: 390px;
+  max-width: 100%;
 }
 
 .numpad-empty {
@@ -119,6 +119,7 @@
   }
   
   .numpad-grid {
+    width: 390px;
     max-width: 100%;
   }
 }
@@ -130,6 +131,11 @@
   
   .usd-amount {
     font-size: 18px;
+  }
+  
+  .numpad-grid {
+    width: 390px;
+    max-width: 100%;
   }
   
   .bottom-nav {
