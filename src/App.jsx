@@ -5,9 +5,11 @@ import 'bui/packages/ui/button.js';
 import 'bui/packages/icons/dist/arrowRight/lg.js';
 import BeforeWeBegin from './BeforeWeBegin.jsx';
 import WalletHome from './WalletHome.jsx';
+import SendScreen from './SendScreen.jsx';
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState('landing');
+  const [sendAmount, setSendAmount] = useState('0');
   const createWalletButtonRef = useRef(null);
 
   const handleCreateWallet = useCallback(() => {
@@ -19,12 +21,24 @@ function App() {
       setCurrentScreen('landing');
     } else if (currentScreen === 'wallet-home') {
       setCurrentScreen('before-we-begin');
+    } else if (currentScreen === 'send') {
+      setCurrentScreen('wallet-home');
     }
   }, [currentScreen]);
 
   const handleNext = useCallback(() => {
     setCurrentScreen('wallet-home');
   }, []);
+
+  const handleSend = useCallback((amount) => {
+    setSendAmount(amount);
+    setCurrentScreen('send');
+  }, []);
+
+  const handleSendContinue = useCallback((destination) => {
+    // TODO: Navigate to send confirmation screen
+    console.log('Send to:', destination, 'Amount:', sendAmount);
+  }, [sendAmount]);
 
   useEffect(() => {
     const button = createWalletButtonRef.current;
@@ -44,7 +58,11 @@ function App() {
   }
 
   if (currentScreen === 'wallet-home') {
-    return <WalletHome onBack={handleBack} />;
+    return <WalletHome onBack={handleBack} onSend={handleSend} />;
+  }
+
+  if (currentScreen === 'send') {
+    return <SendScreen onBack={handleBack} onContinue={handleSendContinue} amount={sendAmount} />;
   }
 
   return (

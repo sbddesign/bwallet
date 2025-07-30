@@ -6,7 +6,7 @@ import 'bui/packages/icons/dist/arrowRight/lg.js';
 import 'bui/packages/icons/dist/arrowUp/lg.js';
 import './WalletHome.css';
 
-function WalletHome({ onBack }) {
+function WalletHome({ onBack, onSend }) {
   const [amount, setAmount] = useState('0');
   const [usdAmount, setUsdAmount] = useState('0');
   const numpadRefs = useRef({});
@@ -61,8 +61,8 @@ function WalletHome({ onBack }) {
   };
 
   const handleSend = () => {
-    // TODO: Navigate to send confirmation screen
-    console.log('Send clicked with amount:', amount);
+    // Navigate to send screen with current amount
+    onSend(amount);
   };
 
   useEffect(() => {
