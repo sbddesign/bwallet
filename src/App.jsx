@@ -73,19 +73,21 @@ function App() {
             <h1 className="title title-large">bwallet</h1>
             <p className="subtitle">Start sending & receiving bitcoin today</p>
           </div>
-          <div className="button-group">
-            <bui-button
+        <div className="button-group">
+          <bui-button
               ref={createWalletButtonRef}
-              style-type="filled" 
-              size="large" 
+            style-type="filled" 
+            size="large" 
               label="Create new wallet"
-              content="label+icon">
+              content="label+icon"
+              wide>
               <bui-arrow-right-lg slot="icon"></bui-arrow-right-lg>
             </bui-button>
-            <bui-button
-              style-type="outline" 
-              size="large" 
-              label="Restore wallet" />
+          <bui-button
+            style-type="outline" 
+            size="large" 
+            label="Restore wallet"
+            wide />
           </div>
         </div>
       </main>

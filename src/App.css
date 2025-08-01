@@ -42,18 +42,18 @@
     height: auto;
     padding: var(--size-8) var(--size-6);
     border-radius: var(--size-8);
-  }
-  
+}
+
   .landing-main {
     padding: var(--size-8) 0;
-  }
+}
 }
 
 @media (max-width: 480px) {
   .landing-content-wrapper {
     padding: var(--size-6) var(--size-4);
-  }
-  
+}
+
   .landing-main {
     padding: var(--size-6) 0;
   }

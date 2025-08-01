@@ -110,7 +110,8 @@ function BeforeWeBegin({ onBack, onNext }) {
             size="large"
             label="Next"
             content="label+icon"
-            disabled={!isNextEnabled}>
+            disabled={!isNextEnabled}
+            wide>
             <bui-arrow-right-lg slot="icon"></bui-arrow-right-lg>
           </bui-button>
         </div>

@@ -78,34 +78,25 @@
 }
 
 /* Bottom navigation */
-.bottom-nav {
+.wallet-home-container .bottom-nav {
   display: flex;
   flex-direction: row;
   gap: 0;
-  align-items: flex-start;
-  justify-content: flex-start;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   flex-shrink: 0;
 }
 
-.bottom-nav bui-button {
-  flex: 1;
+.wallet-home-container .bottom-nav bui-button-cluster {
+  width: 100%;
+  max-width: 390px;
+  display: flex;
+  justify-content: center;
 }
 
-.bottom-nav bui-button:first-child {
-  border-radius: 24px 0 0 24px;
-  border-right: none;
-}
-
-.bottom-nav bui-button:last-child {
-  border-radius: 0 24px 24px 0;
-  border-left: none;
-}
-
-.bottom-nav bui-button:nth-child(2) {
-  border-radius: 0;
-  flex: 0 0 auto;
-  width: 80px;
+.wallet-home-container .bottom-nav bui-button-cluster::part(cluster) {
+  width: 100%;
 }
 
 /* Responsive design for Wallet Home page */
@@ -143,14 +134,7 @@
     gap: var(--size-2);
   }
   
-  .bottom-nav bui-button:first-child,
-  .bottom-nav bui-button:last-child {
-    border-radius: 24px;
-    border: 2px solid var(--button-outline-outline);
-  }
-  
-  .bottom-nav bui-button:nth-child(2) {
-    border-radius: 24px;
+  .bottom-nav bui-button-cluster {
     width: 100%;
   }
 } 

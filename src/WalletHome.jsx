@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import 'bui/packages/ui/button.js';
+import 'bui/packages/ui/button-cluster.js';
 import 'bui/packages/ui/numpad-button.js';
 import 'bui/packages/icons/dist/arrowLeft/lg.js';
-import 'bui/packages/icons/dist/arrowRight/lg.js';
+import 'bui/packages/icons/dist/arrowDown/lg.js';
 import 'bui/packages/icons/dist/arrowUp/lg.js';
+import 'bui/packages/icons/dist/scan/lg.js';
 import './WalletHome.css';
 
 function WalletHome({ onBack, onSend }) {
@@ -165,31 +167,35 @@ function WalletHome({ onBack, onSend }) {
         </div>
 
         <div className="bottom-nav">
-          <bui-button
-            ref={receiveButtonRef}
-            style-type="outline"
-            size="large"
-            label="Receive"
-            content="icon+label">
-            <bui-arrow-up-lg slot="icon"></bui-arrow-up-lg>
-          </bui-button>
-          
-          <bui-button
-            ref={sendIconButtonRef}
-            style-type="filled"
-            size="large"
-            content="icon">
-            <bui-arrow-right-lg slot="icon"></bui-arrow-right-lg>
-          </bui-button>
-          
-          <bui-button
-            ref={sendButtonRef}
-            style-type="outline"
-            size="large"
-            label="Send"
-            content="label+icon">
-            <bui-arrow-right-lg slot="icon"></bui-arrow-right-lg>
-          </bui-button>
+          <bui-button-cluster direction="horizontal">
+            <bui-button
+              ref={receiveButtonRef}
+              style-type="outline"
+              size="large"
+              label="Receive"
+              wide
+              content="icon+label">
+              <bui-arrow-down-lg slot="icon"></bui-arrow-down-lg>
+            </bui-button>
+            
+            <bui-button
+              ref={sendIconButtonRef}
+              style-type="filled"
+              size="large"
+              content="icon">
+              <bui-scan-lg slot="icon"></bui-scan-lg>
+            </bui-button>
+            
+            <bui-button
+              ref={sendButtonRef}
+              style-type="outline"
+              size="large"
+              label="Send"
+              wide
+              content="label+icon">
+              <bui-arrow-up-lg slot="icon"></bui-arrow-up-lg>
+            </bui-button>
+          </bui-button-cluster>
         </div>
       </div>
     </div>
