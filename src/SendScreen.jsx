@@ -1,0 +1,238 @@
+import { useState, useEffect, useRef } from 'react';
+import init, { PaymentParams } from '@mutinywallet/waila-wasm';
+import 'bui/packages/ui/button.js';
+import 'bui/packages/ui/input.js';
+import 'bui/packages/icons/dist/arrowLeft/lg.js';
+import 'bui/packages/icons/dist/arrowRight/lg.js';
+import 'bui/packages/icons/dist/scan/lg.js';
+import 'bui/packages/icons/dist/clipboard/lg.js';
+import 'bui/packages/icons/dist/crossCircle/lg.js';
+import './SendScreen.css';
+
+function SendScreen({ onBack, onContinue, amount }) {
+  const [destination, setDestination] = useState('');
+  const [isValid, setIsValid] = useState(false);
+  const [isWasmInitialized, setIsWasmInitialized] = useState(false);
+  const [validationError, setValidationError] = useState('');
+  const pasteButtonRef = useRef(null);
+  const scanButtonRef = useRef(null);
+  const continueButtonRef = useRef(null);
+  const goBackButtonRef = useRef(null);
+  const inputRef = useRef(null);
+
+  // Initialize WASM module
+  useEffect(() => {
+    const initWasm = async () => {
+      try {
+        await init();
+        setIsWasmInitialized(true);
+      } catch (error) {
+        console.error('Failed to initialize WASM:', error);
+      }
+    };
+    initWasm();
+  }, []);
+
+  const validateBitcoinFormat = (value) => {
+    if (!isWasmInitialized || !value.trim()) {
+      return { isValid: false, error: '' };
+    }
+
+    try {
+      const params = new PaymentParams(value.trim());
+      // If we get here without throwing, the format is valid
+      return { isValid: true, error: '' };
+    } catch (error) {
+      return { 
+        isValid: false, 
+        error: 'Invalid Bitcoin format. Supported formats: Bitcoin address, BIP-21 URI, Lightning invoice, Lightning offer, LNURL, Lightning address, and more.' 
+      };
+    }
+  };
+
+  const handlePaste = async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      setDestination(text);
+      
+      const validation = validateBitcoinFormat(text);
+      setIsValid(validation.isValid);
+      setValidationError(validation.error);
+    } catch (err) {
+      console.log('Failed to read clipboard contents: ', err);
+    }
+  };
+
+  const handleInputChange = (event) => {
+    console.log('Input event:', event);
+    console.log('Event detail:', event.detail);
+    console.log('Event target:', event.target);
+    
+    let value = '';
+    if (event.detail && event.detail.value !== undefined) {
+      value = event.detail.value;
+    } else if (event.target && event.target.value !== undefined) {
+      value = event.target.value;
+    }
+    
+    console.log('Extracted value:', value);
+    setDestination(value);
+    
+    const validation = validateBitcoinFormat(value);
+    setIsValid(validation.isValid);
+    setValidationError(validation.error);
+  };
+
+  const handleScan = () => {
+    // TODO: Implement QR code scanning
+    console.log('Scan QR code');
+  };
+
+  const handleContinue = () => {
+    if (isValid && destination.trim()) {
+      onContinue(destination);
+    }
+  };
+
+  const handleGoBack = () => {
+    onBack();
+  };
+
+  const handleClearInput = () => {
+    setDestination('');
+    setIsValid(false);
+    setValidationError('');
+  };
+
+  // Determine input mood based on validation state
+  const getInputMood = () => {
+    if (!destination.trim()) return 'neutral';
+    return isValid ? 'success' : 'danger';
+  };
+
+  useEffect(() => {
+    const pasteButton = pasteButtonRef.current;
+    const scanButton = scanButtonRef.current;
+    const continueButton = continueButtonRef.current;
+    const goBackButton = goBackButtonRef.current;
+    const input = inputRef.current;
+
+    if (pasteButton) {
+      pasteButton.addEventListener('click', handlePaste);
+    }
+    if (scanButton) {
+      scanButton.addEventListener('click', handleScan);
+    }
+    if (continueButton) {
+      continueButton.addEventListener('click', handleContinue);
+    }
+    if (goBackButton) {
+      goBackButton.addEventListener('click', handleGoBack);
+    }
+    if (input) {
+      input.addEventListener('input', handleInputChange);
+      input.addEventListener('icon-right-click', handleClearInput);
+      // Ensure the input value is properly set
+      input.value = destination;
+    }
+
+    return () => {
+      if (pasteButton) {
+        pasteButton.removeEventListener('click', handlePaste);
+      }
+      if (scanButton) {
+        scanButton.removeEventListener('click', handleScan);
+      }
+      if (continueButton) {
+        continueButton.removeEventListener('click', handleContinue);
+      }
+      if (goBackButton) {
+        goBackButton.removeEventListener('click', handleGoBack);
+      }
+      if (input) {
+        input.removeEventListener('input', handleInputChange);
+        input.removeEventListener('icon-right-click', handleClearInput);
+      }
+    };
+  }, [isValid, destination]);
+
+  return (
+    <div className="send-screen-container" data-theme="conduit" data-mode="light">
+      <div className="content-wrapper">
+        {/* Header with back button */}
+        <div className="header">
+          <button className="back-button" onClick={onBack}>
+            <bui-arrow-left-lg className="back-icon"></bui-arrow-left-lg>
+            <span>Back</span>
+          </button>
+        </div>
+
+        {/* Main content */}
+        <div className="main-content">
+          <h1 className="title">Send Bitcoin</h1>
+          
+          <div className="input-section">
+            <bui-input
+              ref={inputRef}
+              label="Destination"
+              value={destination}
+              placeholder="Enter destination address"
+              mood={getInputMood()}
+              show-icon-right
+              icon-right-action="clear"
+              message={validationError}
+              wide>
+              <bui-cross-circle-lg slot="icon-right"></bui-cross-circle-lg>
+            </bui-input>
+            
+            <div className="action-buttons">
+              <bui-button
+                ref={pasteButtonRef}
+                style-type="outline"
+                size="default"
+                label="Paste"
+                content="label+icon">
+                <bui-clipboard-lg slot="icon"></bui-clipboard-lg>
+              </bui-button>
+              
+              <bui-button
+                ref={scanButtonRef}
+                style-type="outline"
+                size="default"
+                label="Scan"
+                content="label+icon">
+                <bui-scan-lg slot="icon"></bui-scan-lg>
+              </bui-button>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom navigation */}
+        <div className="bottom-nav">
+          <bui-button
+            ref={continueButtonRef}
+            style-type="filled"
+            size="large"
+            label="Continue"
+            content="label+icon"
+            disabled={!isValid}
+            wide>
+            <bui-arrow-right-lg slot="icon"></bui-arrow-right-lg>
+          </bui-button>
+          
+          <bui-button
+            ref={goBackButtonRef}
+            style-type="outline"
+            size="large"
+            label="Go Back"
+            content="icon+label"
+            wide>
+            <bui-arrow-left-lg slot="icon"></bui-arrow-left-lg>
+          </bui-button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default SendScreen;
