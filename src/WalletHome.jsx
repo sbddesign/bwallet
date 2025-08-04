@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import 'bui/packages/ui/button.js';
 import 'bui/packages/ui/button-cluster.js';
 import 'bui/packages/ui/numpad-button.js';
+import 'bui/packages/ui/bitcoin-value.js';
+import 'bui/packages/ui/money-value.js';
 import 'bui/packages/icons/dist/arrowLeft/lg.js';
 import 'bui/packages/icons/dist/arrowDown/lg.js';
 import 'bui/packages/icons/dist/arrowUp/lg.js';
@@ -127,8 +129,14 @@ function WalletHome({ onBack, onSend }) {
       <div className="content-wrapper">
         <div className="amount-section">
           <div className="amount-display">
-            <div className="btc-amount">{formatBtcAmount(amount)}</div>
-            <div className="usd-amount">$ {usdAmount}</div>
+            
+            
+            <div className="btc-amount">
+              <bui-bitcoin-value format="bip177" amount={amount} />
+            </div>
+            <div className="usd-amount">
+              <bui-money-value symbol="$" format="bip177" amount={usdAmount} />
+            </div>
           </div>
           
           <bui-button
