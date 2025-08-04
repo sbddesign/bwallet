@@ -1,18 +1,21 @@
 import { useState, useEffect, useRef } from 'react';
 import 'bui/packages/ui/button.js';
+import 'bui/packages/ui/input.js';
 import 'bui/packages/icons/dist/arrowLeft/lg.js';
 import 'bui/packages/icons/dist/arrowRight/lg.js';
 import 'bui/packages/icons/dist/scan/lg.js';
 import 'bui/packages/icons/dist/clipboard/lg.js';
+import 'bui/packages/icons/dist/crossCircle/lg.js';
 import './SendScreen.css';
 
 function SendScreen({ onBack, onContinue, amount }) {
-  const [destination, setDestination] = useState('₿fatima@twelve.cash');
-  const [isValid, setIsValid] = useState(true);
+  const [destination, setDestination] = useState('');
+  const [isValid, setIsValid] = useState(false);
   const pasteButtonRef = useRef(null);
   const scanButtonRef = useRef(null);
   const continueButtonRef = useRef(null);
   const goBackButtonRef = useRef(null);
+  const inputRef = useRef(null);
 
   const handlePaste = async () => {
     try {
@@ -40,9 +43,25 @@ function SendScreen({ onBack, onContinue, amount }) {
   };
 
   const handleInputChange = (event) => {
-    const value = event.target.value;
+    console.log('Input event:', event);
+    console.log('Event detail:', event.detail);
+    console.log('Event target:', event.target);
+    
+    let value = '';
+    if (event.detail && event.detail.value !== undefined) {
+      value = event.detail.value;
+    } else if (event.target && event.target.value !== undefined) {
+      value = event.target.value;
+    }
+    
+    console.log('Extracted value:', value);
     setDestination(value);
     setIsValid(value.length > 0);
+  };
+
+  const handleClearInput = () => {
+    setDestination('');
+    setIsValid(false);
   };
 
   useEffect(() => {
@@ -50,6 +69,7 @@ function SendScreen({ onBack, onContinue, amount }) {
     const scanButton = scanButtonRef.current;
     const continueButton = continueButtonRef.current;
     const goBackButton = goBackButtonRef.current;
+    const input = inputRef.current;
 
     if (pasteButton) {
       pasteButton.addEventListener('click', handlePaste);
@@ -62,6 +82,12 @@ function SendScreen({ onBack, onContinue, amount }) {
     }
     if (goBackButton) {
       goBackButton.addEventListener('click', handleGoBack);
+    }
+    if (input) {
+      input.addEventListener('input', handleInputChange);
+      input.addEventListener('icon-right-click', handleClearInput);
+      // Ensure the input value is properly set
+      input.value = destination;
     }
 
     return () => {
@@ -76,6 +102,10 @@ function SendScreen({ onBack, onContinue, amount }) {
       }
       if (goBackButton) {
         goBackButton.removeEventListener('click', handleGoBack);
+      }
+      if (input) {
+        input.removeEventListener('input', handleInputChange);
+        input.removeEventListener('icon-right-click', handleClearInput);
       }
     };
   }, [isValid, destination]);
@@ -96,22 +126,17 @@ function SendScreen({ onBack, onContinue, amount }) {
           <h1 className="title">Send Bitcoin</h1>
           
           <div className="input-section">
-            <div className="input-group">
-              <label className="input-label">Destination</label>
-              <div className={`input-field ${isValid ? 'valid' : 'invalid'}`}>
-                <div className="input-content">
-                  <bui-scan-lg className="input-icon success-icon"></bui-scan-lg>
-                  <input
-                    type="text"
-                    value={destination}
-                    onChange={handleInputChange}
-                    className="text-input"
-                    placeholder="Enter destination address"
-                  />
-                  <bui-arrow-right-lg className="input-icon"></bui-arrow-right-lg>
-                </div>
-              </div>
-            </div>
+            <bui-input
+              ref={inputRef}
+              label="Destination"
+              value={destination}
+              placeholder="Enter destination address"
+              mood={isValid ? 'success' : 'neutral'}
+              show-icon-right
+              icon-right-action="clear"
+              wide>
+              <bui-cross-circle-lg slot="icon-right"></bui-cross-circle-lg>
+            </bui-input>
             
             <div className="action-buttons">
               <bui-button
@@ -143,7 +168,8 @@ function SendScreen({ onBack, onContinue, amount }) {
             size="large"
             label="Continue"
             content="label+icon"
-            disabled={!isValid}>
+            disabled={!isValid}
+            wide>
             <bui-arrow-right-lg slot="icon"></bui-arrow-right-lg>
           </bui-button>
           
@@ -152,7 +178,8 @@ function SendScreen({ onBack, onContinue, amount }) {
             style-type="outline"
             size="large"
             label="Go Back"
-            content="icon+label">
+            content="icon+label"
+            wide>
             <bui-arrow-left-lg slot="icon"></bui-arrow-left-lg>
           </bui-button>
         </div>
