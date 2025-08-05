@@ -59,7 +59,7 @@ function SendScreen({ onBack, onContinue, amount }) {
       setIsValid(false);
       setValidationError('Unsupported format. Please enter a valid Bitcoin address, BIP-21 URI, Lightning invoice, or other supported format.');
       setValidationMood('danger');
-      console.log('Invalid Bitcoin format:', error.message);
+      console.log('Invalid Bitcoin format:', error?.message || error || 'Unknown validation error');
     }
   };
 
