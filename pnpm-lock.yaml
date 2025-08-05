@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@mutinywallet/waila-wasm':
+        specifier: ^0.5.0
+        version: 0.5.0
       bui:
         specifier: link:../bui
         version: link:../bui
@@ -361,6 +364,9 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.29':
     resolution: {integrity: sha512-uw6guiW/gcAGPDhLmd77/6lW8QLeiV5RUTsAX46Db6oLhGaVj4lhnPwb184s1bkc8kdVg/+h988dro8GRDpmYQ==}
+
+  '@mutinywallet/waila-wasm@0.5.0':
+    resolution: {integrity: sha512-/gtawHeqKn7hPqPyU7AKEYW8Vy3lgTlvwfzTxpG077KGEKlMcYUImkEoJu14m4+q9YGi5YLYzdZd3BcMOXiVjA==}
 
   '@rolldown/pluginutils@1.0.0-beta.19':
     resolution: {integrity: sha512-3FL3mnMbPu0muGOCaKAhhFEYmqv9eTfPSJRJmANrCwtgK8VuxpsZDGK+m0LYAGoyO8+0j5uRe4PeyPDK1yA/hA==}
@@ -1212,6 +1218,8 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.4
+
+  '@mutinywallet/waila-wasm@0.5.0': {}
 
   '@rolldown/pluginutils@1.0.0-beta.19': {}
 

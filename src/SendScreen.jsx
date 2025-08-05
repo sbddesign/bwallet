@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { init, PaymentParams } from '@mutinywallet/waila-wasm';
 import 'bui/packages/ui/button.js';
 import 'bui/packages/ui/input.js';
 import 'bui/packages/icons/dist/arrowLeft/lg.js';
@@ -11,17 +12,62 @@ import './SendScreen.css';
 function SendScreen({ onBack, onContinue, amount }) {
   const [destination, setDestination] = useState('');
   const [isValid, setIsValid] = useState(false);
+  const [validationError, setValidationError] = useState('');
+  const [validationMood, setValidationMood] = useState('neutral');
+  const [bitcoinWailaReady, setBitcoinWailaReady] = useState(false);
   const pasteButtonRef = useRef(null);
   const scanButtonRef = useRef(null);
   const continueButtonRef = useRef(null);
   const goBackButtonRef = useRef(null);
   const inputRef = useRef(null);
 
+  // Initialize bitcoin-waila WASM module
+  useEffect(() => {
+    const initWasm = async () => {
+      try {
+        await init();
+        setBitcoinWailaReady(true);
+        console.log('Bitcoin WAILA initialized successfully');
+      } catch (error) {
+        console.error('Failed to initialize Bitcoin WAILA:', error);
+      }
+    };
+    
+    initWasm();
+  }, []);
+
+  // Validate Bitcoin address/URI using bitcoin-waila
+  const validateBitcoinFormat = (value) => {
+    if (!bitcoinWailaReady || !value || value.trim() === '') {
+      setIsValid(false);
+      setValidationError('');
+      setValidationMood('neutral');
+      return;
+    }
+
+    try {
+      // Attempt to parse the input with bitcoin-waila
+      const params = new PaymentParams(value.trim());
+      
+      // If we get here, the format is valid
+      setIsValid(true);
+      setValidationError('');
+      setValidationMood('success');
+      console.log('Valid Bitcoin format detected:', params);
+    } catch (error) {
+      // Invalid format
+      setIsValid(false);
+      setValidationError('Unsupported format. Please enter a valid Bitcoin address, BIP-21 URI, Lightning invoice, or other supported format.');
+      setValidationMood('danger');
+      console.log('Invalid Bitcoin format:', error.message);
+    }
+  };
+
   const handlePaste = async () => {
     try {
       const text = await navigator.clipboard.readText();
       setDestination(text);
-      setIsValid(text.length > 0);
+      validateBitcoinFormat(text);
     } catch (err) {
       console.log('Failed to read clipboard contents: ', err);
     }
@@ -56,12 +102,14 @@ function SendScreen({ onBack, onContinue, amount }) {
     
     console.log('Extracted value:', value);
     setDestination(value);
-    setIsValid(value.length > 0);
+    validateBitcoinFormat(value);
   };
 
   const handleClearInput = () => {
     setDestination('');
     setIsValid(false);
+    setValidationError('');
+    setValidationMood('neutral');
   };
 
   useEffect(() => {
@@ -88,6 +136,13 @@ function SendScreen({ onBack, onContinue, amount }) {
       input.addEventListener('icon-right-click', handleClearInput);
       // Ensure the input value is properly set
       input.value = destination;
+      
+      // Set the message attribute for error display
+      if (validationError) {
+        input.setAttribute('message', validationError);
+      } else {
+        input.removeAttribute('message');
+      }
     }
 
     return () => {
@@ -108,7 +163,7 @@ function SendScreen({ onBack, onContinue, amount }) {
         input.removeEventListener('icon-right-click', handleClearInput);
       }
     };
-  }, [isValid, destination]);
+  }, [isValid, destination, validationError]);
 
   return (
     <div className="send-screen-container" data-theme="conduit" data-mode="light">
@@ -131,7 +186,8 @@ function SendScreen({ onBack, onContinue, amount }) {
               label="Destination"
               value={destination}
               placeholder="Enter destination address"
-              mood={isValid ? 'success' : 'neutral'}
+              mood={validationMood}
+              message={validationError}
               show-icon-right
               icon-right-action="clear"
               wide>
