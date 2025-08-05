@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { init, PaymentParams } from '@mutinywallet/waila-wasm';
+import init, { PaymentParams } from '@mutinywallet/waila-wasm';
 import 'bui/packages/ui/button.js';
 import 'bui/packages/ui/input.js';
 import 'bui/packages/icons/dist/arrowLeft/lg.js';
