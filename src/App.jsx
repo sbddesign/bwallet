@@ -6,10 +6,12 @@ import 'bui/packages/icons/dist/arrowRight/lg.js';
 import BeforeWeBegin from './BeforeWeBegin.jsx';
 import WalletHome from './WalletHome.jsx';
 import SendScreen from './SendScreen.jsx';
+import SendReviewScreen from './SendReviewScreen.jsx';
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState('landing');
   const [sendAmount, setSendAmount] = useState('0');
+  const [sendDestination, setSendDestination] = useState('');
   const createWalletButtonRef = useRef(null);
 
   const handleCreateWallet = useCallback(() => {
@@ -23,6 +25,8 @@ function App() {
       setCurrentScreen('before-we-begin');
     } else if (currentScreen === 'send') {
       setCurrentScreen('wallet-home');
+    } else if (currentScreen === 'send-review') {
+      setCurrentScreen('send');
     }
   }, [currentScreen]);
 
@@ -30,15 +34,22 @@ function App() {
     setCurrentScreen('wallet-home');
   }, []);
 
-  const handleSend = useCallback((amount) => {
+  const handleSendAmount = useCallback((amount) => {
     setSendAmount(amount);
     setCurrentScreen('send');
   }, []);
 
   const handleSendContinue = useCallback((destination) => {
-    // TODO: Navigate to send confirmation screen
-    console.log('Send to:', destination, 'Amount:', sendAmount);
-  }, [sendAmount]);
+    setSendDestination(destination);
+    setCurrentScreen('send-review');
+  }, []);
+
+  const handleSend = useCallback((sendData) => {
+    // TODO: Implement actual send functionality
+    console.log('Sending transaction:', sendData);
+    // For now, just go back to wallet home
+    setCurrentScreen('wallet-home');
+  }, []);
 
   useEffect(() => {
     const button = createWalletButtonRef.current;
@@ -58,11 +69,15 @@ function App() {
   }
 
   if (currentScreen === 'wallet-home') {
-    return <WalletHome onBack={handleBack} onSend={handleSend} />;
+    return <WalletHome onBack={handleBack} onSend={handleSendAmount} />;
   }
 
   if (currentScreen === 'send') {
     return <SendScreen onBack={handleBack} onContinue={handleSendContinue} amount={sendAmount} />;
+  }
+
+  if (currentScreen === 'send-review') {
+    return <SendReviewScreen onBack={handleBack} onSend={handleSend} amount={sendAmount} destination={sendDestination} />;
   }
 
   return (
